@@ -1,5 +1,7 @@
 package us.bojie.learnrxjava2;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -24,4 +26,7 @@ public interface Api {
 //
 //    @POST("login/json")
 //    Call<BaseResult> login(@Body UserParam param);
+
+    @GET("courses")
+    Observable<List<Course>> getCourse();
 }
