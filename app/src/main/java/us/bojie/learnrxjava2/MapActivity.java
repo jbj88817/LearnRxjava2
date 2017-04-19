@@ -14,6 +14,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MapActivity extends AppCompatActivity {
@@ -32,6 +33,7 @@ public class MapActivity extends AppCompatActivity {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.1.14:5000/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
         mApi = retrofit.create(Api.class);
@@ -49,8 +51,7 @@ public class MapActivity extends AppCompatActivity {
         Observable.just(getUserParam()).flatMap(new Function<UserParam, ObservableSource<BaseResult>>() {
             @Override
             public ObservableSource<BaseResult> apply(UserParam userParam) throws Exception {
-                BaseResult result = mApi.login(userParam).execute().body();
-                return Observable.just(result);
+                return mApi.login(userParam);
             }
         }).flatMap(new Function<BaseResult, ObservableSource<User>>() {
             @Override
