@@ -16,6 +16,7 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
+import us.bojie.learnrxjava2.imageloader.RxImageLoader;
 
 public class LoadImageActivity extends AppCompatActivity {
 
@@ -28,6 +29,9 @@ public class LoadImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_image);
         ButterKnife.bind(this);
+
+        RxImageLoader.with(this).load("").into(null);
+
 
 //        final Observable<String> memoryObservable = Observable.create(new ObservableOnSubscribe<String>() {
 //            @Override
