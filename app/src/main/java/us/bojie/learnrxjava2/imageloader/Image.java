@@ -11,6 +11,11 @@ public class Image {
     private String url;
     private Bitmap bitmap;
 
+    public Image(String url, Bitmap bitmap) {
+        this.url = url;
+        this.bitmap = bitmap;
+    }
+
     public String getUrl() {
         return url;
     }

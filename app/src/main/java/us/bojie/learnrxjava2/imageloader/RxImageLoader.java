@@ -5,7 +5,6 @@ import android.widget.ImageView;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Predicate;
 
 /**
  * Created by bojiejiang on 4/19/17.
@@ -18,8 +17,8 @@ public class RxImageLoader {
     private String mUrl;
     private RequestCreator mRequestCreator;
 
-    private RxImageLoader() {
-        mRequestCreator = new RequestCreator();
+    private RxImageLoader(Builder builder) {
+        mRequestCreator = new RequestCreator(builder.mContext);
     }
 
     public static RxImageLoader with(Context context) {
@@ -42,13 +41,7 @@ public class RxImageLoader {
         Observable.concat(mRequestCreator.getImageFromMemory(mUrl),
                 mRequestCreator.getImageFromDisk(mUrl),
                 mRequestCreator.getImageFromNetwork(mUrl))
-                .filter(new Predicate<Image>() {
-                    @Override
-                    public boolean test(Image image) throws Exception {
-                        return false;
-                    }
-                })
-                .firstElement()
+                .first(new Image(mUrl, null)).toObservable()
                 .subscribe(new Consumer<Image>() {
                     @Override
                     public void accept(Image image) throws Exception {
@@ -65,7 +58,7 @@ public class RxImageLoader {
         }
 
         public RxImageLoader build() {
-            return new RxImageLoader();
+            return new RxImageLoader(this);
         }
     }
 }
